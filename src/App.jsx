@@ -1,8 +1,8 @@
 function App() {
   return (
-    <div>
-      <h1>Kebab Chef 🍗🔥</h1>
-      <p>Welcome to my restaurant website</p>
+    <div style={{ padding: "20px", color: "white" }}>
+      <h1>Kebab Chef 🔥</h1>
+      <p>Website is working!</p>
     </div>
   );
 }
