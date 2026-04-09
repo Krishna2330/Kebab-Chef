@@ -1,13 +1,568 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Kebab Chef</title>
-  </head>
-  <body>
-    <div id="root"></div>
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Kebab Chef – Madhavadhara, Vizag</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --amber:#e8912a;
+  --amber-light:#f4b05a;
+  --amber-dim:#c4761c;
+  --amber-glow:rgba(232,145,42,.18);
+  --amber-border:rgba(232,145,42,.28);
+  --bg:#0e0c09;
+  --bg2:#141209;
+  --bg3:#1a1610;
+  --card:#1f1b13;
+  --card2:#252017;
+  --border:rgba(255,255,255,.07);
+  --text:#f0ead8;
+  --tmid:#a8997e;
+  --tdim:#6b5e45;
+  --white:#fff;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;}
 
-    <!-- THIS LINE MUST BE THERE -->
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+/* ── NAV ── */
+#nav{position:fixed;top:0;left:0;right:0;z-index:200;height:64px;padding:0 36px;display:flex;align-items:center;justify-content:space-between;transition:all .35s;}
+#nav.scrolled{background:rgba(14,12,9,.94);backdrop-filter:blur(18px);border-bottom:1px solid var(--border);}
+.nav-logo{display:flex;align-items:center;gap:10px;}
+.nav-emblem{width:34px;height:34px;border-radius:8px;background:var(--amber);display:flex;align-items:center;justify-content:center;font-size:17px;}
+.nav-brand{font-family:'Playfair Display',serif;font-weight:800;font-size:19px;color:#fff;letter-spacing:.4px;}
+.nav-links{display:flex;gap:24px;align-items:center;}
+.nav-link{font-size:13px;font-weight:500;color:rgba(255,255,255,.45);text-decoration:none;letter-spacing:.3px;transition:color .2s;}
+.nav-link:hover{color:var(--amber-light);}
+.btn-order{background:var(--amber);color:#fff;padding:9px 20px;border-radius:8px;text-decoration:none;font-weight:600;font-size:13px;letter-spacing:.3px;box-shadow:0 4px 18px rgba(232,145,42,.4);transition:transform .2s,box-shadow .2s;}
+.btn-order:hover{transform:scale(1.04);box-shadow:0 6px 28px rgba(232,145,42,.55);}
+
+/* ── HERO ── */
+#hero{min-height:100vh;background:var(--bg);display:flex;align-items:center;position:relative;overflow:hidden;}
+.hero-noise{position:absolute;inset:0;opacity:.03;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:200px 200px;pointer-events:none;}
+.hero-glow1{position:absolute;top:-10%;right:-5%;width:600px;height:600px;background:radial-gradient(circle,rgba(232,145,42,.09) 0%,transparent 65%);pointer-events:none;}
+.hero-glow2{position:absolute;bottom:0;left:-100px;width:400px;height:400px;background:radial-gradient(circle,rgba(232,145,42,.05) 0%,transparent 65%);pointer-events:none;}
+.hero-line{position:absolute;top:0;left:50%;width:1px;height:100%;background:linear-gradient(to bottom,transparent,rgba(232,145,42,.12) 40%,transparent);pointer-events:none;}
+.hero-inner{width:100%;max-width:1200px;margin:0 auto;padding:88px 40px 48px;display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;}
+.hero-text{animation:fadeInLeft .9s ease both;}
+.hero-eyebrow{display:flex;align-items:center;gap:10px;margin-bottom:28px;}
+.eyebrow-line{width:28px;height:2px;background:var(--amber);}
+.eyebrow-txt{font-size:11px;letter-spacing:3px;color:var(--amber);font-weight:600;text-transform:uppercase;}
+.live-dot{width:7px;height:7px;border-radius:50%;background:#4ade80;margin-left:8px;animation:blink 2s infinite;}
+.hero-h1{font-family:'Playfair Display',serif;font-size:clamp(44px,5.5vw,72px);font-weight:900;line-height:1.06;color:#fff;letter-spacing:-2px;margin-bottom:20px;}
+.hero-h1 em{font-style:normal;color:var(--amber);}
+.hero-desc{font-size:15px;color:var(--tmid);line-height:1.75;margin-bottom:36px;max-width:400px;}
+.hero-btns{display:flex;gap:12px;flex-wrap:wrap;}
+.btn-wa{background:var(--amber);color:#fff;padding:15px 30px;border-radius:10px;text-decoration:none;font-weight:700;font-size:14px;box-shadow:0 8px 36px rgba(232,145,42,.45);transition:transform .2s;}
+.btn-wa:hover{transform:scale(1.04);}
+.btn-secondary{background:rgba(255,255,255,.05);border:1px solid var(--border);color:var(--text);padding:15px 28px;border-radius:10px;text-decoration:none;font-weight:600;font-size:14px;transition:all .2s;}
+.btn-secondary:hover{border-color:var(--amber-border);color:var(--amber-light);}
+.hero-stats{display:flex;gap:36px;margin-top:44px;padding-top:36px;border-top:1px solid var(--border);}
+.stat-val{font-family:'Playfair Display',serif;font-size:26px;font-weight:800;color:var(--amber);}
+.stat-lbl{font-size:10px;color:var(--tdim);letter-spacing:2px;text-transform:uppercase;margin-top:4px;}
+
+/* RESTAURANT SVG ILLUSTRATION */
+.hero-visual{animation:fadeInRight 1s ease .2s both;display:flex;align-items:center;justify-content:center;}
+#restaurant-svg{width:100%;max-width:480px;height:auto;}
+
+/* ── MENU ── */
+#menu{background:var(--bg2);padding:88px 20px;border-top:1px solid var(--border);}
+.section-eyebrow{font-size:11px;letter-spacing:3px;color:var(--amber);font-weight:600;text-transform:uppercase;margin-bottom:12px;display:flex;align-items:center;gap:10px;}
+.section-eyebrow::before{content:'';width:24px;height:1.5px;background:var(--amber);}
+.section-h2{font-family:'Playfair Display',serif;font-size:clamp(30px,4vw,46px);font-weight:800;color:#fff;letter-spacing:-1.5px;}
+.section-h2 span{color:var(--amber);}
+.section-sub{font-size:14px;color:var(--tmid);margin-top:8px;}
+.menu-wrap{max-width:820px;margin:0 auto;}
+.menu-head{text-align:center;margin-bottom:44px;}
+.filter-row{display:flex;gap:10px;justify-content:center;margin-bottom:36px;flex-wrap:wrap;}
+.filter-btn{background:transparent;border:1.5px solid var(--border);color:var(--tmid);padding:9px 22px;border-radius:999px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;}
+.filter-btn.active,.filter-btn:hover{background:var(--amber);border-color:var(--amber);color:#fff;box-shadow:0 4px 18px rgba(232,145,42,.4);}
+.cat-block{margin-bottom:10px;}
+.cat-btn{width:100%;background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px 20px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;transition:all .25s;font-family:'DM Sans',sans-serif;}
+.cat-btn:hover{border-color:var(--amber-border);}
+.cat-btn.open{background:var(--amber);border-color:var(--amber);box-shadow:0 6px 28px rgba(232,145,42,.35);}
+.cat-left{display:flex;align-items:center;gap:12px;}
+.cat-emoji{font-size:18px;}
+.cat-name{font-weight:700;font-size:15px;color:var(--text);transition:color .2s;}
+.cat-btn.open .cat-name{color:#fff;}
+.cat-count{font-size:11px;font-weight:600;color:var(--tdim);background:rgba(255,255,255,.06);padding:2px 9px;border-radius:999px;transition:all .2s;}
+.cat-btn.open .cat-count{color:rgba(255,255,255,.7);background:rgba(255,255,255,.15);}
+.cat-arrow{font-size:18px;color:var(--tdim);transition:transform .25s,color .2s;}
+.cat-btn.open .cat-arrow{transform:rotate(180deg);color:#fff;}
+.cat-items{overflow:hidden;max-height:0;transition:max-height .4s ease,opacity .3s;opacity:0;padding-top:0;}
+.cat-items.open{max-height:9999px;opacity:1;padding-top:8px;}
+.menu-item{display:flex;justify-content:space-between;align-items:center;padding:14px 18px;border-radius:12px;background:var(--card2);border:1px solid var(--border);margin-bottom:8px;transition:all .2s;}
+.menu-item:hover{border-color:var(--amber-border);transform:translateX(3px);}
+.item-left{display:flex;align-items:center;gap:12px;}
+.veg-indicator{width:16px;height:16px;border-radius:3px;flex-shrink:0;display:flex;align-items:center;justify-content:center;}
+.veg-indicator.veg{border:2px solid #22c55e;}
+.veg-indicator.nonveg{border:2px solid #ef4444;}
+.veg-dot-inner{width:7px;height:7px;border-radius:50%;}
+.veg-indicator.veg .veg-dot-inner{background:#22c55e;}
+.veg-indicator.nonveg .veg-dot-inner{background:#ef4444;}
+.item-name{font-size:14px;font-weight:500;color:var(--text);}
+.item-right{display:flex;align-items:center;gap:12px;flex-shrink:0;}
+.item-price{font-family:'Playfair Display',serif;font-size:15px;font-weight:700;color:var(--amber);}
+.add-btn{background:var(--amber-glow);border:1px solid var(--amber-border);color:var(--amber-light);padding:6px 14px;border-radius:8px;text-decoration:none;font-size:12px;font-weight:600;white-space:nowrap;transition:all .2s;}
+.add-btn:hover{background:var(--amber);color:#fff;transform:scale(1.06);}
+
+/* ── ABOUT ── */
+#about{background:var(--bg);padding:88px 20px;border-top:1px solid var(--border);}
+.about-inner{max-width:1040px;margin:0 auto;display:grid;grid-template-columns:1fr 1.5fr;gap:80px;align-items:center;}
+.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:28px;}
+.stat-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px 20px;}
+.stat-card-val{font-family:'Playfair Display',serif;font-size:24px;font-weight:800;color:var(--amber);}
+.stat-card-lbl{font-size:10px;color:var(--tdim);letter-spacing:2px;text-transform:uppercase;margin-top:5px;}
+.about-p{font-size:15px;line-height:1.9;color:var(--tmid);margin-bottom:20px;}
+.about-quote{border-left:3px solid var(--amber);padding-left:20px;font-family:'Playfair Display',serif;font-style:italic;font-size:17px;color:var(--text);line-height:1.7;margin-top:8px;}
+
+/* ── FIND US ── */
+#findus{background:var(--bg2);padding:88px 20px;border-top:1px solid var(--border);}
+.findus-inner{max-width:1040px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;}
+.address-block{margin-top:16px;}
+.address-line{font-size:15px;color:var(--tmid);line-height:1.9;}
+.address-strong{color:var(--text);font-weight:600;}
+.hours-badge{display:inline-flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border);padding:10px 16px;border-radius:10px;font-size:13px;color:var(--tmid);margin:18px 0 28px;}
+.findus-btns{display:flex;gap:12px;flex-wrap:wrap;}
+.btn-dir{background:var(--amber);color:#fff;padding:13px 26px;border-radius:10px;text-decoration:none;font-weight:700;font-size:13px;box-shadow:0 6px 24px rgba(232,145,42,.4);transition:transform .2s;}
+.btn-dir:hover{transform:scale(1.04);}
+.btn-phone{background:var(--card);color:var(--text);border:1px solid var(--border);padding:13px 26px;border-radius:10px;text-decoration:none;font-weight:600;font-size:13px;transition:all .2s;}
+.btn-phone:hover{border-color:var(--amber-border);color:var(--amber-light);}
+.map-wrap{border-radius:18px;overflow:hidden;border:1px solid var(--border);height:320px;box-shadow:0 12px 48px rgba(0,0,0,.5);}
+.map-wrap iframe{border:0;display:block;width:100%;height:100%;}
+
+/* ── FOOTER ── */
+footer{background:var(--bg);border-top:1px solid var(--border);padding:56px 40px 32px;}
+.footer-inner{max-width:1100px;margin:0 auto;}
+.footer-top{display:flex;justify-content:space-between;flex-wrap:wrap;gap:36px;margin-bottom:40px;}
+.footer-logo{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.footer-emblem{width:38px;height:38px;border-radius:10px;background:var(--amber);display:flex;align-items:center;justify-content:center;font-size:20px;}
+.footer-brand{font-family:'Playfair Display',serif;font-weight:800;font-size:20px;color:#fff;}
+.footer-tagline{font-size:13px;color:var(--tdim);font-style:italic;margin-top:4px;}
+.footer-col-title{font-size:10px;letter-spacing:3px;color:var(--amber);margin-bottom:14px;font-weight:600;}
+.footer-links{display:flex;flex-direction:column;gap:9px;}
+.footer-link{font-size:13px;text-decoration:none;color:var(--tmid);transition:color .2s;}
+.footer-link:hover{color:var(--amber-light);}
+.footer-bottom{border-top:1px solid var(--border);padding-top:22px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+.footer-copy{font-size:12px;color:var(--tdim);}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeInLeft{from{opacity:0;transform:translateX(-40px);}to{opacity:1;transform:none;}}
+@keyframes fadeInRight{from{opacity:0;transform:translateX(40px);}to{opacity:1;transform:none;}}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+@keyframes flicker{0%,100%{opacity:1}45%{opacity:.85}50%{opacity:1}55%{opacity:.9}}
+.reveal{opacity:0;transform:translateY(30px);transition:opacity .7s ease,transform .7s ease;}
+.reveal.visible{opacity:1;transform:none;}
+
+/* smoke animation */
+@keyframes smoke{0%{opacity:0;transform:translateY(0) scaleX(1);}50%{opacity:.5}100%{opacity:0;transform:translateY(-40px) scaleX(2.5);}}
+
+@media(max-width:760px){
+  .hero-inner,.about-inner,.findus-inner{grid-template-columns:1fr;}
+  .hero-visual{order:-1;}
+  #restaurant-svg{max-width:320px;}
+  #nav{padding:0 18px;}
+  .nav-links a:not(.btn-order){display:none;}
+  .hero-stats{gap:20px;}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <div class="nav-logo">
+    <div class="nav-emblem">🍛</div>
+    <span class="nav-brand">Kebab Chef</span>
+  </div>
+  <div class="nav-links">
+    <a href="#menu" class="nav-link">Menu</a>
+    <a href="#about" class="nav-link">About</a>
+    <a href="#findus" class="nav-link">Find Us</a>
+    <a href="https://wa.me/919000592999?text=Hi%20Kebab%20Chef!%20I%20would%20like%20to%20place%20an%20order.%20%F0%9F%8D%BD%EF%B8%8F" target="_blank" class="btn-order">Order Now</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-noise"></div>
+  <div class="hero-glow1"></div>
+  <div class="hero-glow2"></div>
+  <div class="hero-line"></div>
+  <div class="hero-inner">
+    <div class="hero-text">
+      <div class="hero-eyebrow">
+        <span class="eyebrow-txt">Open Now · Till 11 PM</span>
+        <span class="live-dot"></span>
+      </div>
+      <h1 class="hero-h1">Slow-Fired.<br><em>Soul-Deep.</em><br>Vizag's Own.</h1>
+      <p class="hero-desc">Authentic Tandoori · Biryani · North Indian & Chinese.<br>Madhavadhara, Visakhapatnam.</p>
+      <div class="hero-btns">
+        <a href="https://wa.me/919000592999?text=Hi%20Kebab%20Chef!%20I%20would%20like%20to%20place%20an%20order.%20%F0%9F%8D%BD%EF%B8%8F" target="_blank" class="btn-wa">📲 Order on WhatsApp</a>
+        <a href="tel:9000592999" class="btn-secondary">📞 Call Us</a>
+      </div>
+      <div class="hero-stats">
+        <div><div class="stat-val">4.2★</div><div class="stat-lbl">Rating</div></div>
+        <div><div class="stat-val">2,973</div><div class="stat-lbl">Reviews</div></div>
+        <div><div class="stat-val">₹1050</div><div class="stat-lbl">For Two</div></div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <!-- Restaurant SVG Illustration -->
+      <svg id="restaurant-svg" viewBox="0 0 480 440" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="glowAmber" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#e8912a" stop-opacity=".22"/>
+            <stop offset="100%" stop-color="#e8912a" stop-opacity="0"/>
+          </radialGradient>
+          <radialGradient id="glowFire" cx="50%" cy="80%" r="50%">
+            <stop offset="0%" stop-color="#f4b05a" stop-opacity=".6"/>
+            <stop offset="100%" stop-color="#e8912a" stop-opacity="0"/>
+          </radialGradient>
+          <filter id="glow">
+            <feGaussianBlur stdDeviation="3" result="blur"/>
+            <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+          <filter id="softglow">
+            <feGaussianBlur stdDeviation="6" result="blur"/>
+            <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+        </defs>
+
+        <!-- Background glow -->
+        <ellipse cx="240" cy="280" rx="200" ry="140" fill="url(#glowAmber)"/>
+
+        <!-- Ground shadow -->
+        <ellipse cx="240" cy="400" rx="170" ry="18" fill="rgba(0,0,0,.5)"/>
+
+        <!-- Building base -->
+        <rect x="80" y="200" width="320" height="190" rx="6" fill="#1a1610"/>
+        <rect x="80" y="200" width="320" height="190" rx="6" fill="none" stroke="#e8912a" stroke-width="1.5" stroke-opacity=".3"/>
+
+        <!-- Brick texture lines -->
+        <g stroke="#ffffff" stroke-opacity=".03" stroke-width="1">
+          <line x1="80" y1="220" x2="400" y2="220"/>
+          <line x1="80" y1="240" x2="400" y2="240"/>
+          <line x1="80" y1="260" x2="400" y2="260"/>
+          <line x1="80" y1="280" x2="400" y2="280"/>
+          <line x1="80" y1="300" x2="400" y2="300"/>
+          <line x1="80" y1="320" x2="400" y2="320"/>
+          <line x1="80" y1="340" x2="400" y2="340"/>
+          <line x1="80" y1="360" x2="400" y2="360"/>
+          <line x1="80" y1="380" x2="400" y2="380"/>
+          <!-- Vertical brick offsets -->
+          <line x1="130" y1="200" x2="130" y2="390"/>
+          <line x1="180" y1="200" x2="180" y2="390"/>
+          <line x1="230" y1="200" x2="230" y2="390"/>
+          <line x1="280" y1="200" x2="280" y2="390"/>
+          <line x1="330" y1="200" x2="330" y2="390"/>
+          <line x1="380" y1="200" x2="380" y2="390"/>
+        </g>
+
+        <!-- Roof / Awning -->
+        <path d="M60 200 L240 155 L420 200 Z" fill="#1f1b13"/>
+        <path d="M60 200 L240 155 L420 200 Z" fill="none" stroke="#e8912a" stroke-width="2" stroke-opacity=".6"/>
+        <!-- Awning scallop -->
+        <path d="M60 200 Q80 212 100 200 Q120 212 140 200 Q160 212 180 200 Q200 212 220 200 Q240 212 260 200 Q280 212 300 200 Q320 212 340 200 Q360 212 380 200 Q400 212 420 200" fill="none" stroke="#e8912a" stroke-width="2.5" stroke-opacity=".7"/>
+
+        <!-- Flag on top -->
+        <line x1="240" y1="155" x2="240" y2="110" stroke="#e8912a" stroke-width="2" stroke-opacity=".8"/>
+        <path d="M240 110 L268 118 L240 126 Z" fill="#e8912a" opacity=".9"/>
+
+        <!-- Sign board above door -->
+        <rect x="130" y="210" width="220" height="40" rx="6" fill="#0e0c09" stroke="#e8912a" stroke-width="1.5" stroke-opacity=".7"/>
+        <text x="240" y="236" text-anchor="middle" font-family="'Playfair Display',serif" font-size="15" font-weight="800" fill="#e8912a" letter-spacing="1">KEBAB CHEF</text>
+
+        <!-- Windows left -->
+        <rect x="98" y="270" width="70" height="60" rx="5" fill="#0e0c09" stroke="#e8912a" stroke-width="1" stroke-opacity=".4"/>
+        <!-- Window light amber glow -->
+        <rect x="100" y="272" width="66" height="56" rx="4" fill="#e8912a" fill-opacity=".07"/>
+        <line x1="133" y1="270" x2="133" y2="330" stroke="#e8912a" stroke-width=".8" stroke-opacity=".3"/>
+        <line x1="98" y1="300" x2="168" y2="300" stroke="#e8912a" stroke-width=".8" stroke-opacity=".3"/>
+        <!-- Warm glow inside window -->
+        <rect x="104" y="276" width="27" height="22" rx="2" fill="#e8912a" fill-opacity=".15"/>
+        <rect x="136" y="276" width="27" height="22" rx="2" fill="#f4b05a" fill-opacity=".12"/>
+
+        <!-- Windows right -->
+        <rect x="312" y="270" width="70" height="60" rx="5" fill="#0e0c09" stroke="#e8912a" stroke-width="1" stroke-opacity=".4"/>
+        <rect x="314" y="272" width="66" height="56" rx="4" fill="#e8912a" fill-opacity=".07"/>
+        <line x1="347" y1="270" x2="347" y2="330" stroke="#e8912a" stroke-width=".8" stroke-opacity=".3"/>
+        <line x1="312" y1="300" x2="382" y2="300" stroke="#e8912a" stroke-width=".8" stroke-opacity=".3"/>
+        <rect x="318" y="276" width="27" height="22" rx="2" fill="#f4b05a" fill-opacity=".15"/>
+        <rect x="350" y="276" width="27" height="22" rx="2" fill="#e8912a" fill-opacity=".12"/>
+
+        <!-- Main door arch -->
+        <path d="M185 390 L185 325 Q185 295 240 295 Q295 295 295 325 L295 390 Z" fill="#0e0c09" stroke="#e8912a" stroke-width="1.5" stroke-opacity=".5"/>
+        <path d="M185 390 L185 325 Q185 295 240 295 Q295 295 295 325 L295 390 Z" fill="#e8912a" fill-opacity=".04"/>
+        <!-- Door handle -->
+        <circle cx="232" cy="348" r="4" fill="#e8912a" fill-opacity=".6"/>
+        <circle cx="248" cy="348" r="4" fill="#e8912a" fill-opacity=".6"/>
+
+        <!-- Tandoor pot outside -->
+        <ellipse cx="340" cy="385" rx="28" ry="12" fill="#2a2218"/>
+        <path d="M318 355 Q318 340 340 340 Q362 340 362 355 L358 385 Q358 388 340 388 Q322 388 322 385 Z" fill="#2a2218" stroke="#e8912a" stroke-width="1.5" stroke-opacity=".5"/>
+        <!-- Tandoor rim -->
+        <ellipse cx="340" cy="355" rx="22" ry="8" fill="#1a1610" stroke="#e8912a" stroke-width="1.5" stroke-opacity=".6"/>
+        <!-- Fire in tandoor -->
+        <g filter="url(#glow)" style="animation:flicker 1.5s infinite">
+          <path d="M333 355 Q334 343 340 338 Q346 343 341 348 Q345 342 348 338 Q349 350 340 355 Z" fill="#f4b05a" fill-opacity=".9"/>
+          <path d="M337 355 Q338 347 340 342 Q342 347 340 355 Z" fill="#fff" fill-opacity=".7"/>
+        </g>
+        <!-- Glow from tandoor -->
+        <ellipse cx="340" cy="355" rx="22" ry="8" fill="url(#glowFire)" opacity=".4"/>
+
+        <!-- Skewer sticks in tandoor -->
+        <line x1="332" y1="330" x2="334" y2="360" stroke="#c0a060" stroke-width="2" stroke-opacity=".7"/>
+        <line x1="340" y1="325" x2="340" y2="358" stroke="#c0a060" stroke-width="2" stroke-opacity=".7"/>
+        <line x1="348" y1="330" x2="346" y2="360" stroke="#c0a060" stroke-width="2" stroke-opacity=".7"/>
+        <!-- Meat on skewers -->
+        <ellipse cx="333" cy="337" rx="5" ry="4" fill="#c4761c" opacity=".85"/>
+        <ellipse cx="340" cy="332" rx="5" ry="4" fill="#e8912a" opacity=".85"/>
+        <ellipse cx="347" cy="337" rx="5" ry="4" fill="#c4761c" opacity=".85"/>
+
+        <!-- Smoke wisps from tandoor -->
+        <g opacity=".4">
+          <path d="M332 330 Q328 316 333 306 Q338 296 332 288" fill="none" stroke="#a8997e" stroke-width="2" stroke-linecap="round" style="animation:smoke 2.5s infinite"/>
+          <path d="M340 325 Q336 311 341 301 Q346 291 340 283" fill="none" stroke="#a8997e" stroke-width="1.5" stroke-linecap="round" style="animation:smoke 3s infinite .5s"/>
+          <path d="M348 330 Q344 316 349 306 Q354 296 348 288" fill="none" stroke="#a8997e" stroke-width="1.5" stroke-linecap="round" style="animation:smoke 2.8s infinite 1s"/>
+        </g>
+
+        <!-- Potted plant left -->
+        <rect x="95" y="370" width="24" height="22" rx="3" fill="#2a2218" stroke="#e8912a" stroke-width="1" stroke-opacity=".3"/>
+        <path d="M107 370 Q100 355 94 350 Q102 352 107 362 Q112 352 120 350 Q114 355 107 370 Z" fill="#22c55e" fill-opacity=".6"/>
+        <path d="M107 370 Q104 358 107 348 Q110 358 107 370 Z" fill="#22c55e" fill-opacity=".4"/>
+
+        <!-- Hanging lanterns -->
+        <g filter="url(#softglow)">
+          <!-- Lantern 1 -->
+          <line x1="155" y1="155" x2="155" y2="175" stroke="#e8912a" stroke-width="1.5" stroke-opacity=".6"/>
+          <path d="M147 175 Q147 195 155 198 Q163 195 163 175 Z" fill="#e8912a" fill-opacity=".25" stroke="#e8912a" stroke-width="1" stroke-opacity=".5"/>
+          <ellipse cx="155" cy="175" rx="8" ry="3" fill="#e8912a" fill-opacity=".4"/>
+          <ellipse cx="155" cy="198" rx="5" ry="2" fill="#e8912a" fill-opacity=".3"/>
+          <!-- Lantern 2 -->
+          <line x1="240" y1="145" x2="240" y2="168" stroke="#e8912a" stroke-width="1.5" stroke-opacity=".6"/>
+          <path d="M232 168 Q232 190 240 193 Q248 190 248 168 Z" fill="#e8912a" fill-opacity=".3" stroke="#e8912a" stroke-width="1" stroke-opacity=".6"/>
+          <ellipse cx="240" cy="168" rx="8" ry="3" fill="#e8912a" fill-opacity=".5"/>
+          <ellipse cx="240" cy="193" rx="5" ry="2" fill="#e8912a" fill-opacity=".3"/>
+          <!-- Lantern 3 -->
+          <line x1="325" y1="155" x2="325" y2="175" stroke="#e8912a" stroke-width="1.5" stroke-opacity=".6"/>
+          <path d="M317 175 Q317 195 325 198 Q333 195 333 175 Z" fill="#e8912a" fill-opacity=".25" stroke="#e8912a" stroke-width="1" stroke-opacity=".5"/>
+          <ellipse cx="325" cy="175" rx="8" ry="3" fill="#e8912a" fill-opacity=".4"/>
+          <ellipse cx="325" cy="198" rx="5" ry="2" fill="#e8912a" fill-opacity=".3"/>
+        </g>
+
+        <!-- Stars in sky -->
+        <g fill="#fff" opacity=".3">
+          <circle cx="60" cy="80" r="1.5"/>
+          <circle cx="90" cy="50" r="1"/>
+          <circle cx="420" cy="60" r="1.5"/>
+          <circle cx="400" cy="100" r="1"/>
+          <circle cx="450" cy="80" r="1.2"/>
+          <circle cx="35" cy="110" r="1"/>
+          <circle cx="460" cy="130" r="1.2"/>
+        </g>
+
+        <!-- Moon -->
+        <path d="M38 48 Q52 38 50 62 Q38 62 38 48 Z" fill="#f4b05a" fill-opacity=".4"/>
+
+        <!-- Floating animation on whole building -->
+        <g style="animation:float 5s ease-in-out infinite">
+          <!-- kebab on stick floating above -->
+          <line x1="130" y1="120" x2="130" y2="78" stroke="#c0a060" stroke-width="2" stroke-opacity=".7"/>
+          <rect x="122" y="95" width="16" height="10" rx="4" fill="#e8912a" opacity=".8"/>
+          <rect x="122" y="108" width="16" height="10" rx="4" fill="#c4761c" opacity=".8"/>
+          <rect x="122" y="82" width="16" height="10" rx="4" fill="#e8912a" opacity=".8"/>
+          <!-- biryani bowl floating -->
+          <ellipse cx="370" cy="100" rx="28" ry="12" fill="#2a2218" stroke="#e8912a" stroke-width="1" stroke-opacity=".5"/>
+          <path d="M342 100 Q342 120 370 122 Q398 120 398 100 Z" fill="#2a2218" stroke="#e8912a" stroke-width="1" stroke-opacity=".3"/>
+          <ellipse cx="370" cy="100" rx="24" ry="9" fill="#c4761c" fill-opacity=".5"/>
+          <circle cx="362" cy="98" r="3" fill="#e8912a" fill-opacity=".7"/>
+          <circle cx="375" cy="97" r="2.5" fill="#f4b05a" fill-opacity=".7"/>
+          <circle cx="368" cy="103" r="2" fill="#c4761c" fill-opacity=".8"/>
+        </g>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- MENU -->
+<section id="menu">
+  <div class="menu-wrap">
+    <div class="menu-head reveal">
+      <div class="section-eyebrow">Explore</div>
+      <div class="section-h2">Our <span>Full Menu</span></div>
+      <div class="section-sub">80+ dishes across 15 categories</div>
+    </div>
+    <div class="filter-row reveal">
+      <button class="filter-btn active" data-filter="all">All</button>
+      <button class="filter-btn" data-filter="veg">🌿 Pure Veg</button>
+      <button class="filter-btn" data-filter="nonveg">🍗 Non-Veg</button>
+    </div>
+    <div id="menu-cats"></div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-inner">
+    <div class="reveal">
+      <div class="section-eyebrow">About Us</div>
+      <div class="section-h2" style="font-size:clamp(34px,5vw,56px);">Born in<br><span>Fire.</span></div>
+      <div class="stat-grid">
+        <div class="stat-card"><div class="stat-card-val">4.2★</div><div class="stat-card-lbl">Rating</div></div>
+        <div class="stat-card"><div class="stat-card-val">2,973</div><div class="stat-card-lbl">Reviews</div></div>
+        <div class="stat-card"><div class="stat-card-val">₹1050</div><div class="stat-card-lbl">For Two</div></div>
+        <div class="stat-card"><div class="stat-card-val">80+</div><div class="stat-card-lbl">Dishes</div></div>
+      </div>
+    </div>
+    <div class="reveal">
+      <p class="about-p">Kebab Chef started with one obsession — bringing the real flavours of the North Indian tandoor to Vizag. Every dish is crafted from scratch, every spice blend made in-house, every kebab hand-formed and fired at over 400°C.</p>
+      <div class="about-quote">"Great food doesn't need shortcuts. It needs time, fire and intent."</div>
+      <p class="about-p" style="margin-top:20px;">From our signature Afghani Kebabs slow-marinated overnight to our Dum Biryani sealed and cooked over a real wood flame — everything takes time, and it shows in every bite.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FIND US -->
+<section id="findus">
+  <div class="findus-inner">
+    <div class="reveal">
+      <div class="section-eyebrow">Visit Us</div>
+      <div class="section-h2" style="margin-bottom:16px;">Find <span>Us</span></div>
+      <div class="address-block">
+        <div class="address-line">39-27-15, Appayya Nagar</div>
+        <div class="address-line">Punjab Hotel Junction, Vuda Colony</div>
+        <div class="address-line">Kalinganagar, Madhavadhara</div>
+        <div class="address-line"><span class="address-strong">Visakhapatnam — 530018</span></div>
+      </div>
+      <div class="hours-badge">⏰ Open 11:00 AM – 11:00 PM · All Days</div>
+      <div class="findus-btns">
+        <a href="https://www.google.com/maps?daddr=39-27-15,+Appayya+Nagar,+Punjab+Hotel+Junction,+Vuda+Colony,+Kalinganagar,+Madhavadhara,+Visakhapatnam,+Andhra+Pradesh+530018" target="_blank" class="btn-dir">📍 Get Directions</a>
+        <a href="tel:9000592999" class="btn-phone">📞 +91 90005 92999</a>
+      </div>
+    </div>
+    <div class="reveal">
+      <div class="map-wrap">
+        <iframe src="https://maps.google.com/maps?q=Kebab+Chef+Madhavadhara+Visakhapatnam&output=embed&z=15" allowfullscreen loading="lazy"></iframe>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div>
+        <div class="footer-logo">
+          <div class="footer-emblem">🍛</div>
+          <span class="footer-brand">Kebab Chef</span>
+        </div>
+        <div class="footer-tagline">A multicuisine restaurant · Vizag</div>
+      </div>
+      <div>
+        <div class="footer-col-title">ORDER</div>
+        <div class="footer-links">
+          <a href="https://wa.me/919000592999?text=Hi%20Kebab%20Chef!%20I%20would%20like%20to%20place%20an%20order.%20%F0%9F%8D%BD%EF%B8%8F" target="_blank" class="footer-link" style="color:#25D366;">WhatsApp →</a>
+          <a href="https://www.swiggy.com/restaurants/kebab-chef-restaurant-appaya-nagar-madhavadhara-vizag-289993" target="_blank" class="footer-link" style="color:#FC8019;">Swiggy →</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">CONTACT</div>
+        <div style="font-size:13px;color:var(--tdim);line-height:1.9;">+91 90005 92999<br>Madhavadhara, Vizag</div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-copy">© 2025 Kebab Chef · All rights reserved</span>
+      <span class="footer-copy">⭐ 4.2 · 2,973 ratings · Madhavadhara</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ── WHATSAPP HELPER ──────────────────────────────────
+const WA_BASE = "https://wa.me/919000592999?text=";
+function waLink(item){
+  const msg = encodeURIComponent(`Hi Kebab Chef! 🍽️ I would like to order:\n\n• ${item}\n\nPlease confirm availability and price. Thank you!`);
+  return WA_BASE + msg;
+}
+
+// ── MENU DATA ─────────────────────────────────────────
+const menuData=[
+  {id:"salads",title:"Salads & Raita",emoji:"🥗",items:[{n:"Green Salad",p:60,v:true},{n:"Onion Salad",p:50,v:true},{n:"Mixed Raita",p:80,v:true},{n:"Fruit Mix Raita",p:100,v:true}]},
+  {id:"soups",title:"Soups",emoji:"🍲",items:[{n:"Veg Manchow",p:130,v:true},{n:"Sweet Corn Veg",p:140,v:true},{n:"Lemon Coriander",p:130,v:true},{n:"Mushroom Clear Soup",p:150,v:true},{n:"Chicken Manchow",p:160,v:false},{n:"Chicken Hot & Sour",p:170,v:false},{n:"Chicken Tom Yum",p:200,v:false},{n:"Chicken Dragon Soup",p:180,v:false}]},
+  {id:"veg-s",title:"Veg Starters",emoji:"🌿",items:[{n:"Paneer Majestic",p:240,v:true},{n:"Paneer 65",p:220,v:true},{n:"Gobi 65",p:180,v:true},{n:"Baby Corn Manchurian",p:190,v:true},{n:"Mushroom 65",p:200,v:true},{n:"Honey Chilli Potato",p:170,v:true}]},
+  {id:"nonveg-s",title:"Non-Veg Starters",emoji:"🍗",items:[{n:"Chicken 65",p:220,v:false},{n:"Chicken Lollipop (6 pcs)",p:260,v:false},{n:"Dragon Chicken",p:280,v:false},{n:"Pepper Chicken",p:260,v:false},{n:"Garlic Chicken",p:250,v:false},{n:"Kung Pao Chicken",p:280,v:false}]},
+  {id:"seafood",title:"Seafood Starters",emoji:"🐟",items:[{n:"Apollo Fish",p:300,v:false},{n:"Butter Garlic Prawns",p:380,v:false},{n:"Chilli Fish",p:280,v:false},{n:"Dragon Prawns",p:400,v:false}]},
+  {id:"tandoori",title:"Tandoori ⭐",emoji:"🔥",items:[{n:"Chicken Tikka",p:260,v:false},{n:"Afghani Chicken Kebab (Half – 4pcs)",p:370,v:false},{n:"Afghani Chicken Kebab (Full – 8pcs)",p:680,v:false},{n:"Tandoori Chicken",p:320,v:false},{n:"Paneer Tikka",p:240,v:true},{n:"Fish Tikka",p:320,v:false}]},
+  {id:"main",title:"Main Course",emoji:"🍛",items:[{n:"Butter Chicken",p:300,v:false},{n:"Kadai Chicken",p:280,v:false},{n:"Chicken Tikka Masala",p:300,v:false},{n:"Chicken Kolhapuri",p:280,v:false},{n:"Prawns Curry",p:380,v:false}]},
+  {id:"biryani",title:"Biryani ⭐",emoji:"🍚",star:true,items:[{n:"Veg Biryani",p:180,v:true},{n:"Paneer Biryani",p:220,v:true},{n:"Mushroom Biryani",p:200,v:true},{n:"Veg Ulavacharu Biryani",p:220,v:true},{n:"Chicken Dum Biryani",p:220,v:false},{n:"Chicken Fry Biryani",p:240,v:false},{n:"Chicken Tikka Biryani",p:260,v:false},{n:"Chicken Ulavacharu Biryani",p:280,v:false},{n:"Egg Biryani",p:180,v:false},{n:"Fish Biryani",p:260,v:false},{n:"Prawns Biryani",p:320,v:false},{n:"Non-Veg Biryani Platter (3 pax)",p:800,v:false}]},
+  {id:"rice",title:"Fried Rice",emoji:"🍳",items:[{n:"Veg Fried Rice",p:150,v:true},{n:"Egg Fried Rice",p:170,v:false},{n:"Chicken Fried Rice",p:200,v:false},{n:"Schezwan Chicken Rice",p:220,v:false},{n:"Prawns Fried Rice",p:260,v:false}]},
+  {id:"noodles",title:"Noodles",emoji:"🍜",items:[{n:"Veg Hakka Noodles",p:150,v:true},{n:"Veg Schezwan Noodles",p:170,v:true},{n:"Chicken Noodles",p:200,v:false},{n:"Egg Noodles",p:170,v:false}]},
+  {id:"breads",title:"Breads",emoji:"🫓",items:[{n:"Butter Naan",p:40,v:true},{n:"Garlic Naan",p:60,v:true},{n:"Kulcha",p:60,v:true},{n:"Tandoori Roti",p:30,v:true},{n:"Chicken Keema Paratha",p:120,v:false}]},
+  {id:"pantry",title:"Pantry",emoji:"🍽️",items:[{n:"Curd Rice",p:100,v:true},{n:"Steam Rice",p:80,v:true},{n:"Special Curd Rice",p:120,v:true}]},
+  {id:"drinks",title:"Drinks",emoji:"🥤",items:[{n:"Buttermilk",p:60,v:true},{n:"Lime Soda",p:80,v:true},{n:"Mojito",p:120,v:true},{n:"Blue Curacao",p:140,v:true}]},
+  {id:"shakes",title:"Milkshakes",emoji:"🧋",items:[{n:"Mango Shake",p:120,v:true},{n:"Strawberry Shake",p:120,v:true},{n:"Chocolate Shake",p:130,v:true},{n:"Oreo Shake",p:140,v:true}]},
+  {id:"desserts",title:"Desserts",emoji:"🍨",items:[{n:"Gulab Jamun (2pcs)",p:80,v:true},{n:"Ice Cream (1 scoop)",p:80,v:true},{n:"Double Ka Meetha",p:120,v:true}]}
+];
+
+// ── RENDER MENU ──────────────────────────────────────
+let activeFilter="all";
+function renderMenu(){
+  const wrap=document.getElementById('menu-cats');
+  wrap.innerHTML='';
+  menuData.forEach((cat,ci)=>{
+    const filteredItems=cat.items.filter(it=>{
+      if(activeFilter==='veg') return it.v;
+      if(activeFilter==='nonveg') return !it.v;
+      return true;
+    });
+    if(filteredItems.length===0) return;
+    const block=document.createElement('div');
+    block.className='cat-block';
+    const btn=document.createElement('button');
+    btn.className='cat-btn'+(ci<2?' open':'');
+    btn.innerHTML=`<div class="cat-left"><span class="cat-emoji">${cat.emoji}</span><span class="cat-name">${cat.title}</span><span class="cat-count">${filteredItems.length} items</span></div><span class="cat-arrow">▾</span>`;
+    const items=document.createElement('div');
+    items.className='cat-items'+(ci<2?' open':'');
+    filteredItems.forEach(it=>{
+      const div=document.createElement('div');
+      div.className='menu-item';
+      div.innerHTML=`<div class="item-left"><div class="veg-indicator ${it.v?'veg':'nonveg'}"><div class="veg-dot-inner"></div></div><span class="item-name">${it.n}</span></div><div class="item-right"><span class="item-price">₹${it.p}</span><a class="add-btn" href="${waLink(it.n+' – ₹'+it.p)}" target="_blank">Order →</a></div>`;
+      items.appendChild(div);
+    });
+    btn.addEventListener('click',()=>{
+      const open=btn.classList.toggle('open');
+      items.classList.toggle('open',open);
+    });
+    block.appendChild(btn);
+    block.appendChild(items);
+    wrap.appendChild(block);
+  });
+}
+renderMenu();
+document.querySelectorAll('.filter-btn').forEach(b=>{
+  b.addEventListener('click',()=>{
+    document.querySelectorAll('.filter-btn').forEach(x=>x.classList.remove('active'));
+    b.classList.add('active');
+    activeFilter=b.dataset.filter;
+    renderMenu();
+  });
+});
+
+// ── NAV SCROLL ────────────────────────────────────────
+window.addEventListener('scroll',()=>{
+  document.getElementById('nav').classList.toggle('scrolled',window.scrollY>60);
+});
+
+// ── REVEAL ON SCROLL ──────────────────────────────────
+const revealObserver=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');revealObserver.unobserve(e.target);}});
+},{threshold:.15});
+document.querySelectorAll('.reveal').forEach(el=>revealObserver.observe(el));
+</script>
+</body>
 </html>
